@@ -15,8 +15,8 @@
     <PackageTags>mapping;object mapping;automapper</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/lowryel/Mlapper.Auto.Mapper</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/lowryel/Mlapper.Auto.Mapper</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/lowryel/Mlapper.Auto.Mapper.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/lowryel/Mlapper.Auto.Mapper.git</PackageProjectUrl>
     
     <!-- XML documentation -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
