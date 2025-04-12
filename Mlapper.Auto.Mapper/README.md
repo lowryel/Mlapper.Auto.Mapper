@@ -1,4 +1,4 @@
-# SimpleMappingTool
+# Mlapper-Mapper
 
 A lightweight object-to-object mapping library for .NET applications.
 
@@ -13,7 +13,7 @@ A lightweight object-to-object mapping library for .NET applications.
 ## Installation
 
 ```bash
-dotnet add package SimpleMappingTool
+dotnet add package Mlapper-Mapper
 ```
 
 ## Basic Usage
