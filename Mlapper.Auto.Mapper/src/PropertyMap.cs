@@ -2,6 +2,7 @@ using System;
 
 
 using System;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Mlapper.Auto.Mapper
@@ -14,17 +15,34 @@ namespace Mlapper.Auto.Mapper
         /// <summary>
         /// The source property (null if using a custom resolver)
         /// </summary>
-        public PropertyInfo? SourceProperty { get; }
-        
+        public PropertyInfo? SourceProperty { get; set; }
+
+        /// <summary>
+        /// Optional expressions for source and destination properties
+        /// </summary>
+        public LambdaExpression? SourceExpression { get; set; }
+
+        /// <summary>
+        /// Optional expressions for source and destination properties
+        /// </summary>
+        public LambdaExpression? DestinationExpression { get; set; }
+
+
         /// <summary>
         /// The destination property
         /// </summary>
         public PropertyInfo DestinationProperty { get; }
-        
+
         /// <summary>
         /// Optional custom value resolver function
         /// </summary>
         public Func<object, object?>? CustomValueResolver { get; }
+
+        /// <summary>
+        /// Optional condition to apply before mapping
+        /// /// </summary>
+
+        public Func<object, bool>? Condition { get; set; }
 
         /// <summary>
         /// Creates a new property mapping

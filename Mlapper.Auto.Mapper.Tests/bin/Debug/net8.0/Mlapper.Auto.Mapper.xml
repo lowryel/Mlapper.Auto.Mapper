@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Mlapper.Auto.Mapper</name>
+    </assembly>
+    <members>
+        <member name="T:Mlapper.Auto.Mapper.IMapper">
+            <summary>
+            Interface for mapping objects from one type to another
+            </summary>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.IMapper.Map``2(``0)">
+            <summary>
+            Maps a source object to a new instance of the destination type
+            </summary>
+            <typeparam name="TSource">Source type</typeparam>
+            <typeparam name="TDestination">Destination type</typeparam>
+            <param name="source">Source object</param>
+            <returns>New instance of destination type with mapped properties</returns>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.IMapper.Map``2(``0,``1)">
+            <summary>
+            Maps a source object to an existing destination object
+            </summary>
+            <typeparam name="TSource">Source type</typeparam>
+            <typeparam name="TDestination">Destination type</typeparam>
+            <param name="source">Source object</param>
+            <param name="destination">Destination object</param>
+            <returns>The destination object with mapped properties</returns>
+        </member>
+        <member name="T:Mlapper.Auto.Mapper.Mapper">
+            <summary>
+            Implementation of IMapper that maps objects based on configured mappings
+            </summary>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.Mapper.#ctor(System.Collections.Generic.Dictionary{System.Type,System.Collections.Generic.Dictionary{System.Type,Mlapper.Auto.Mapper.MappingInfo}})">
+            <summary>
+            Creates a new mapper instance with the specified mappings
+            </summary>
+            <param name="mappings">Mapping configuration dictionary</param>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.Mapper.Map``2(``0)">
+            <summary>
+            Maps a source object to a new instance of the destination type
+            </summary>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.Mapper.Map``2(``0,``1)">
+            <summary>
+            Maps a source object to an existing destination object
+            </summary>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.Mapper.MapInternal``2(``0,``1,Mlapper.Auto.Mapper.MappingInfo)">
+            <summary>
+            Internal method that performs the actual property mapping
+            </summary>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.Mapper.EnsureMappingExists(System.Type,System.Type)">
+            <summary>
+            Ensures a mapping exists between the source and destination types
+            </summary>
+        </member>
+        <member name="T:Mlapper.Auto.Mapper.MapperConfiguration">
+            <summary>
+            Configuration class for setting up object mappings
+            </summary>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.MapperConfiguration.AddProfile(Mlapper.Auto.Mapper.src.Profile)">
+            <summary>
+            Adds a profile to the configuration
+            Profiles allow for grouping related mappings and configurations
+            </summary>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.MapperConfiguration.CreateMap``2">
+            <summary>
+            Creates a mapping between source and destination types
+            </summary>
+            <typeparam name="TSource">Source type</typeparam>
+            <typeparam name="TDestination">Destination type</typeparam>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.MapperConfiguration.ForMember``2(System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Func{``0,System.Object})">
+            <summary>
+            Configures a custom mapping for a specific member
+            </summary>
+            <typeparam name="TSource">Source type</typeparam>
+            <typeparam name="TDestination">Destination type</typeparam>
+            <param name="destinationMember">Expression selecting the destination member</param>
+            <param name="valueResolver">Function to resolve the value from the source</param>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.MapperConfiguration.GetPropertyFromExpression``2(System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            Extracts the property info from a member expression
+            </summary>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.MapperConfiguration.IsAssignableOrConvertible(System.Type,System.Type)">
+            <summary>
+            Determines if a source type can be assigned to or converted to a destination type
+            </summary>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.MapperConfiguration.IsNumericType(System.Type)">
+            <summary>
+            Determines if a type is a numeric type
+            </summary>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.MapperConfiguration.CreateMapper">
+            <summary>
+            Creates a mapper instance with the current configuration
+            </summary>
+        </member>
+        <member name="T:Mlapper.Auto.Mapper.PropertyMapBuilder`2">
+            <summary>
+            Builder class for configuring property mappings 
+            </summary>
+            <typeparam name="TSource"></typeparam>
+            <typeparam name="TDest"></typeparam>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.PropertyMapBuilder`2.#ctor(Mlapper.Auto.Mapper.PropertyMap)">
+            <summary>
+            Creates a new property mapping builder
+            </summary>
+            <param name="map">Property map to configure</param>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.PropertyMapBuilder`2.Condition(System.Func{`0,System.Boolean})">
+            <summary>
+            Sets a custom value resolver for the property mapping
+            </summary>
+            <param name="condition">Function to resolve the value from the source</param>
+            <returns>Returns the builder for chaining</returns>
+            
+        </member>
+        <member name="T:Mlapper.Auto.Mapper.MappingInfo">
+            <summary>
+            Contains mapping information between a source and destination type
+            </summary>
+        </member>
+        <member name="P:Mlapper.Auto.Mapper.MappingInfo.SourceType">
+            <summary>
+            The source type for this mapping
+            </summary>
+        </member>
+        <member name="P:Mlapper.Auto.Mapper.MappingInfo.DestinationType">
+            <summary>
+            The destination type for this mapping
+            </summary>
+        </member>
+        <member name="P:Mlapper.Auto.Mapper.MappingInfo.PropertyMaps">
+            <summary>
+            List of property mappings
+            </summary>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.MappingInfo.#ctor(System.Type,System.Type)">
+            <summary>
+            Creates a new mapping info instance
+            </summary>
+            <param name="sourceType">Source type</param>
+            <param name="destinationType">Destination type</param>
+        </member>
+        <member name="T:Mlapper.Auto.Mapper.src.Profile">
+            <summary>
+            Base class for defining mapping profiles
+            </summary>
+            <remarks>
+            Profiles allow for grouping related mappings and configurations
+            </remarks>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.src.Profile.Configure(Mlapper.Auto.Mapper.MapperConfiguration)">
+            <summary>
+            Configures the mappings for this profile
+            </summary>
+            <param name="config">The mapper configuration to use for defining mappings</param>
+            <remarks>
+            This method should be overridden in derived classes to define specific mappings
+            </remarks>
+        </member>
+        <member name="T:Mlapper.Auto.Mapper.PropertyMap">
+            <summary>
+            Represents a mapping between a source property and a destination property
+            </summary>
+        </member>
+        <member name="P:Mlapper.Auto.Mapper.PropertyMap.SourceProperty">
+            <summary>
+            The source property (null if using a custom resolver)
+            </summary>
+        </member>
+        <member name="P:Mlapper.Auto.Mapper.PropertyMap.SourceExpression">
+            <summary>
+            Optional expressions for source and destination properties
+            </summary>
+        </member>
+        <member name="P:Mlapper.Auto.Mapper.PropertyMap.DestinationExpression">
+            <summary>
+            Optional expressions for source and destination properties
+            </summary>
+        </member>
+        <member name="P:Mlapper.Auto.Mapper.PropertyMap.DestinationProperty">
+            <summary>
+            The destination property
+            </summary>
+        </member>
+        <member name="P:Mlapper.Auto.Mapper.PropertyMap.CustomValueResolver">
+            <summary>
+            Optional custom value resolver function
+            </summary>
+        </member>
+        <member name="P:Mlapper.Auto.Mapper.PropertyMap.Condition">
+            <summary>
+            Optional condition to apply before mapping
+            /// </summary>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.PropertyMap.#ctor(System.Reflection.PropertyInfo,System.Reflection.PropertyInfo,System.Func{System.Object,System.Object})">
+            <summary>
+            Creates a new property mapping
+            </summary>
+            <param name="sourceProperty">Source property (optional if using a custom resolver)</param>
+            <param name="destinationProperty">Destination property</param>
+            <param name="customValueResolver">Optional custom value resolver function</param>
+        </member>
+    </members>
+</doc>

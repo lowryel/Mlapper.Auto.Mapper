@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Linq.Expressions;
+using Mlapper.Auto.Mapper.src;
 
 
 namespace Mlapper.Auto.Mapper
@@ -14,6 +15,17 @@ namespace Mlapper.Auto.Mapper
     public class MapperConfiguration
     {
         private readonly Dictionary<Type, Dictionary<Type, MappingInfo>> _mappings = new();
+
+        // private readonly List<MappingInfo> _mappings = new();
+
+        /// <summary>
+        /// Adds a profile to the configuration
+        /// Profiles allow for grouping related mappings and configurations
+        /// </summary>
+        public void AddProfile(Profile profile)
+        {
+            profile.Configure(this);
+        }
 
         /// <summary>
         /// Creates a mapping between source and destination types
@@ -55,7 +67,7 @@ namespace Mlapper.Auto.Mapper
         /// <typeparam name="TDestination">Destination type</typeparam>
         /// <param name="destinationMember">Expression selecting the destination member</param>
         /// <param name="valueResolver">Function to resolve the value from the source</param>
-        public void ForMember<TSource, TDestination>(
+        public PropertyMapBuilder<TSource, TDestination> ForMember<TSource, TDestination>(
             Expression<Func<TDestination, object?>> destinationMember,
             Func<TSource, object?> valueResolver)
         {
@@ -78,6 +90,9 @@ namespace Mlapper.Auto.Mapper
             // Add custom mapping with value resolver function
             mappingInfo.PropertyMaps.Add(new PropertyMap(null, destProperty,
                 src => valueResolver((TSource)src)));
+
+            var map = new PropertyMap(null, destProperty, src => valueResolver((TSource)src));
+            return new PropertyMapBuilder<TSource, TDestination>(map);
         }
 
         /// <summary>
@@ -136,7 +151,7 @@ namespace Mlapper.Auto.Mapper
         {
             // Create a deep copy of the mappings to prevent modification after mapper creation
             var mappingsCopy = new Dictionary<Type, Dictionary<Type, MappingInfo>>();
-            
+
             foreach (var sourceMapping in _mappings)
             {
                 mappingsCopy[sourceMapping.Key] = new Dictionary<Type, MappingInfo>();
@@ -145,8 +160,41 @@ namespace Mlapper.Auto.Mapper
                     mappingsCopy[sourceMapping.Key][destMapping.Key] = destMapping.Value;
                 }
             }
-            
+
             return new Mapper(mappingsCopy);
         }
+
     }
+
+    /// <summary>
+    /// Builder class for configuring property mappings 
+    /// </summary>
+    /// <typeparam name="TSource"></typeparam>
+    /// <typeparam name="TDest"></typeparam>
+    public class PropertyMapBuilder<TSource, TDest>
+    {
+        private readonly PropertyMap _map;
+
+        /// <summary>
+        /// Creates a new property mapping builder
+        /// </summary>
+        /// <param name="map">Property map to configure</param>
+        public PropertyMapBuilder(PropertyMap map)
+        {
+            _map = map;
+        }
+
+        /// <summary>
+        /// Sets a custom value resolver for the property mapping
+        /// </summary>
+        /// <param name="condition">Function to resolve the value from the source</param>
+        /// <returns>Returns the builder for chaining</returns>
+        /// 
+        public PropertyMapBuilder<TSource, TDest> Condition(Func<TSource, bool> condition)
+        {
+            _map.Condition = src => condition((TSource)src);
+            return this;
+        }
+    }
+
 }

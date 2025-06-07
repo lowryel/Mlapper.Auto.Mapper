@@ -50,7 +50,7 @@ namespace Mlapper.Auto.Mapper
         {
             if (source == null)
                 return destination;
-            
+
             if (destination == null)
                 throw new ArgumentNullException(nameof(destination));
 
@@ -63,7 +63,7 @@ namespace Mlapper.Auto.Mapper
 
             return MapInternal(source, destination, mappingInfo);
         }
-        
+
         /// <summary>
         /// Internal method that performs the actual property mapping
         /// </summary>
@@ -74,47 +74,56 @@ namespace Mlapper.Auto.Mapper
             {
                 try
                 {
+                    // Run condition, if any
+                    if (propertyMap.Condition != null && !propertyMap.Condition(source!)) continue;
+
                     object? value = null;
+
                     if (propertyMap.CustomValueResolver != null)
                     {
                         value = propertyMap.CustomValueResolver(source!);
+                    }
+                    else if (propertyMap.SourceExpression != null)
+                    {
+                        value = propertyMap.SourceExpression.Compile().DynamicInvoke(source);
                     }
                     else if (propertyMap.SourceProperty != null)
                     {
                         value = propertyMap.SourceProperty.GetValue(source);
                     }
 
+                    var destProp = propertyMap.DestinationProperty;
+
                     if (value != null)
                     {
-                        if (propertyMap.DestinationProperty.PropertyType.IsAssignableFrom(value.GetType()))
+                        if (destProp.PropertyType.IsAssignableFrom(value.GetType()))
                         {
-                            propertyMap.DestinationProperty.SetValue(destination, value);
+                            destProp.SetValue(destination, value);
                         }
                         else
                         {
                             try
                             {
-                                // Perform type conversion
-                                var convertedValue = Convert.ChangeType(value, propertyMap.DestinationProperty.PropertyType);
-                                propertyMap.DestinationProperty.SetValue(destination, convertedValue);
+                                var convertedValue = Convert.ChangeType(value, destProp.PropertyType);
+                                destProp.SetValue(destination, convertedValue);
                             }
                             catch (InvalidCastException ex)
                             {
-                                Console.WriteLine($"Failed to convert {value} to {propertyMap.DestinationProperty.PropertyType.Name}: {ex.Message}");
+                                Console.WriteLine($"Failed to convert {value} to {destProp.PropertyType.Name}: {ex.Message}");
                             }
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Handle or log mapping errors
-                    Console.WriteLine($"Error mapping property {propertyMap.DestinationProperty.Name}: {ex.Message}");
+                    Console.WriteLine($"Error mapping to {propertyMap.DestinationProperty.Name}: {ex.Message}");
                 }
             }
 
             return destination;
         }
-        
+
+
         /// <summary>
         /// Ensures a mapping exists between the source and destination types
         /// </summary>
