@@ -61,6 +61,71 @@ namespace Mlapper.Auto.Mapper
         }
 
         /// <summary>
+        /// Create a reversed mapping
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <exception cref="InvalidOperationException"></exception>
+        public void ReverseMap<TSource, TDestination>()
+        {
+            var sourceType = typeof(TSource);
+            var destType = typeof(TDestination);
+
+            if (!_mappings.TryGetValue(sourceType, out var destDict) ||
+                !destDict.TryGetValue(destType, out var originalMapping))
+            {
+                throw new InvalidOperationException($"Mapping from {sourceType.Name} to {destType.Name} not found.");
+            }
+
+            // Create reversed mapping info
+            var reversedInfo = new MappingInfo(destType, sourceType);
+
+            foreach (var propMap in originalMapping.PropertyMaps)
+            {
+                PropertyInfo? reversedSourceProp = propMap.DestinationProperty;
+                PropertyInfo? reversedDestProp = propMap.SourceProperty ??
+                    (propMap.SourceExpression != null ? InferPropertyFromExpression(propMap.SourceExpression) : null);
+
+                if (reversedDestProp == null)
+                {
+                    continue; // Skip if we can't determine the destination property
+                }
+
+                // Create new property map with reversed properties
+                var reversedPropMap = new PropertyMap(
+                    sourceProperty: reversedSourceProp,
+                    destinationProperty: reversedDestProp,
+                    customValueResolver: null // Custom resolvers don't automatically reverse
+                )
+                {
+                    Condition = propMap.Condition // Maintain the same condition if any
+                };
+
+                if (propMap.DestinationExpression != null && propMap.SourceExpression != null)
+                {
+                    reversedPropMap.SourceExpression = propMap.DestinationExpression;
+                    reversedPropMap.DestinationExpression = propMap.SourceExpression;
+                }
+
+                if (reversedDestProp == null)
+                {
+                    Console.WriteLine($"Skipping reverse map for {reversedSourceProp?.Name} - unable to infer source property.");
+                    continue;
+                }
+
+                reversedInfo.PropertyMaps.Add(reversedPropMap);
+            }
+
+            // Add or update the reversed mapping
+            if (!_mappings.ContainsKey(destType))
+            {
+                _mappings[destType] = new Dictionary<Type, MappingInfo>();
+            }
+            _mappings[destType][sourceType] = reversedInfo;
+        }
+
+
+        /// <summary>
         /// Configures a custom mapping for a specific member
         /// </summary>
         /// <typeparam name="TSource">Source type</typeparam>
@@ -94,6 +159,7 @@ namespace Mlapper.Auto.Mapper
             var map = new PropertyMap(null, destProperty, src => valueResolver((TSource)src));
             return new PropertyMapBuilder<TSource, TDestination>(map);
         }
+
 
         /// <summary>
         /// Extracts the property info from a member expression
@@ -164,6 +230,21 @@ namespace Mlapper.Auto.Mapper
             return new Mapper(mappingsCopy);
         }
 
+        private PropertyInfo InferPropertyFromExpression(LambdaExpression? expr)
+        {
+            if (expr == null)
+                throw new InvalidOperationException("SourceExpression is null and SourceProperty is not set.");
+
+            var member = (expr.Body is UnaryExpression unary)
+                ? (unary.Operand as MemberExpression)
+                : (expr.Body as MemberExpression);
+
+            if (member == null || !(member.Member is PropertyInfo propInfo))
+                throw new InvalidOperationException("Invalid expression; unable to resolve property.");
+
+            return propInfo;
+        }
+
     }
 
     /// <summary>
@@ -196,5 +277,4 @@ namespace Mlapper.Auto.Mapper
             return this;
         }
     }
-
 }
