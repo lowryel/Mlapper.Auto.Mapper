@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Mlapper.Auto.Mapper.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4f040bafd7f74f2e64180f001bbd0763f9285a9e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+318064c02171df2e8ea89e2f77f53f855b19f25c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Mlapper.Auto.Mapper.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Mlapper.Auto.Mapper.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

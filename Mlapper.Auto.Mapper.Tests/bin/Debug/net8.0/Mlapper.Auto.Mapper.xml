@@ -77,6 +77,14 @@
             <typeparam name="TSource">Source type</typeparam>
             <typeparam name="TDestination">Destination type</typeparam>
         </member>
+        <member name="M:Mlapper.Auto.Mapper.MapperConfiguration.ReverseMap``2">
+            <summary>
+            Create a reversed mapping
+            </summary>
+            <typeparam name="TSource"></typeparam>
+            <typeparam name="TDestination"></typeparam>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
         <member name="M:Mlapper.Auto.Mapper.MapperConfiguration.ForMember``2(System.Linq.Expressions.Expression{System.Func{``1,System.Object}},System.Func{``0,System.Object})">
             <summary>
             Configures a custom mapping for a specific member

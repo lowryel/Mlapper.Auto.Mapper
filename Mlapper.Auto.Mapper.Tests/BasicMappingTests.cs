@@ -60,25 +60,36 @@ namespace Mlapper.Auto.Mapper.Tests
         }
 
         [Fact]
-        public void Map_WithConditionalMapping_ShouldApplyCondition()
+        public void Map_WithReverseMapping_ShouldMapInBothDirections()
         {
             // Arrange
             var config = new MapperConfiguration();
             config.CreateMap<SourceClass, DestinationClass>();
+            config.CreateMap<DestinationClass, SourceClass>(); // Reverse mapping
             
-            // Create a new mapping with condition
-            var source1 = new SourceClass { Id = 5, Name = "Original Name" };
-            var source2 = new SourceClass { Id = 15, Name = "Original Name" };
+            var mapper = config.CreateMapper();
+
+            var source = new SourceClass
+            {
+                Id = 42,
+                Name = "Original Name",
+                Description = "Test Description"
+            };
+
+            // Act - Forward mapping
+            var destination = mapper.Map<SourceClass, DestinationClass>(source);
             
-            // Update test expectations to match actual behavior
-            var destination1 = new DestinationClass { Name = "Overridden Name" };
-            var destination2 = new DestinationClass { Name = "Original Name" };
+            // Act - Reverse mapping back to source
+            var roundTrip = mapper.Map<DestinationClass, SourceClass>(destination);
 
             // Assert
-            Assert.Equal("Overridden Name", destination1.Name);
-            Assert.Equal("Original Name", destination2.Name);
-            Assert.Equal("Original Name", source1.Name);
-            Assert.Equal("Original Name", source2.Name);
+            Assert.Equal(source.Id, destination.Id);
+            Assert.Equal(source.Name, destination.Name);
+            Assert.Equal(source.Description, destination.Description);
+            
+            Assert.Equal(source.Id, roundTrip.Id);
+            Assert.Equal(source.Name, roundTrip.Name);
+            Assert.Equal(source.Description, roundTrip.Description);
         }
 
         [Fact]
