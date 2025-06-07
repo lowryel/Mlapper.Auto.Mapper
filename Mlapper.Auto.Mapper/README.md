@@ -43,6 +43,17 @@ var existingCustomer = new Customer();
 mapper.Map(customerDto, existingCustomer);
 ```
 
+## For your web projects, add it as a service to your Program file
+```csharp
+builder.Services.AddSingleton(sp =>
+{
+    var config = new MapperConfiguration();
+    config.CreateMap<ProductDto, Product>();
+
+    return config.CreateMapper();
+});
+```
+
 ## Advanced Usage
 
 ### Null Handling
