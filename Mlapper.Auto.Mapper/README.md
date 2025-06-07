@@ -9,6 +9,8 @@ A lightweight object-to-object mapping library for .NET applications.
 - Custom property mapping with lambda expressions
 - Type conversion support
 - Fluent configuration interface
+- Reverse mapping support
+- Conditional and profile mapping
 
 ## Installation
 
@@ -44,6 +46,7 @@ mapper.Map(customerDto, existingCustomer);
 ```
 
 ## For your web projects, add it as a service to your Program file
+
 ```csharp
 builder.Services.AddSingleton(sp =>
 {
