@@ -92,7 +92,8 @@
     "C:\\Users\\user\\.nuget\\packages\\xunit.core\\2.6.2\\xunit.core.2.6.2.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\xunit.extensibility.core\\2.6.2\\xunit.extensibility.core.2.6.2.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\xunit.extensibility.execution\\2.6.2\\xunit.extensibility.execution.2.6.2.nupkg.sha512",
-    "C:\\Users\\user\\.nuget\\packages\\xunit.runner.visualstudio\\2.5.4\\xunit.runner.visualstudio.2.5.4.nupkg.sha512"
+    "C:\\Users\\user\\.nuget\\packages\\xunit.runner.visualstudio\\2.5.4\\xunit.runner.visualstudio.2.5.4.nupkg.sha512",
+    "C:\\Users\\user\\.nuget\\packages\\mlapper-mapper\\1.2.1\\mlapper-mapper.1.2.1.nupkg.sha512"
   ],
   "logs": []
 }

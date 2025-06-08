@@ -135,6 +135,31 @@
             <returns>Returns the builder for chaining</returns>
             
         </member>
+        <member name="T:Mlapper.Auto.Mapper.MappingExpression`2">
+            <summary>
+            Provides a fluent interface for mapping configuration
+            </summary>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.MappingExpression`2.#ctor(Mlapper.Auto.Mapper.MapperConfiguration)">
+            <summary>
+            Creates a new mapping expression
+            </summary>
+            <param name="configuration">The mapper configuration</param>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.MappingExpression`2.ReverseMap">
+            <summary>
+            Creates a reverse mapping from the destination to the source type
+            </summary>
+            <returns>A mapping expression for the reverse mapping</returns>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.MappingExpression`2.ForMember(System.Linq.Expressions.Expression{System.Func{`1,System.Object}},System.Func{`0,System.Object})">
+            <summary>
+            Customize the mapping for a specific member
+            </summary>
+            <param name="destinationMember">Expression to select the destination member</param>
+            <param name="valueResolver">Function to resolve the value from the source</param>
+            <returns>A property map builder for further configuration</returns>
+        </member>
         <member name="T:Mlapper.Auto.Mapper.MappingInfo">
             <summary>
             Contains mapping information between a source and destination type
@@ -178,6 +203,18 @@
             <remarks>
             This method should be overridden in derived classes to define specific mappings
             </remarks>
+        </member>
+        <member name="T:Mlapper.Auto.Mapper.src.ReverseConfiguration">
+            <summary>
+            Helper class for reverse mapping configuration
+            </summary>
+        </member>
+        <member name="M:Mlapper.Auto.Mapper.src.ReverseConfiguration.GetPropertyFromExpression(System.Linq.Expressions.LambdaExpression)">
+            <summary>
+            Extracts property info from a lambda expression
+            </summary>
+            <param name="expression">Lambda expression targeting a property</param>
+            <returns>PropertyInfo for the targeted property</returns>
         </member>
         <member name="T:Mlapper.Auto.Mapper.PropertyMap">
             <summary>

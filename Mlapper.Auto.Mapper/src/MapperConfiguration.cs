@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Linq.Expressions;
 using Mlapper.Auto.Mapper.src;
+using static Mlapper.Auto.Mapper.src.ReverseConfiguration;
 
 
 namespace Mlapper.Auto.Mapper
@@ -32,7 +33,7 @@ namespace Mlapper.Auto.Mapper
         /// </summary>
         /// <typeparam name="TSource">Source type</typeparam>
         /// <typeparam name="TDestination">Destination type</typeparam>
-        public void CreateMap<TSource, TDestination>()
+        public MappingExpression<TSource, TDestination> CreateMap<TSource, TDestination>()
         {
             var sourceType = typeof(TSource);
             var destinationType = typeof(TDestination);
@@ -58,6 +59,7 @@ namespace Mlapper.Auto.Mapper
                     }
                 }
             }
+            return new MappingExpression<TSource, TDestination>(this);
         }
 
         /// <summary>
